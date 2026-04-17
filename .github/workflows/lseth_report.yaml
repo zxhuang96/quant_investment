@@ -1,4 +1,4 @@
-name: LSETH Hourly Monitor
+name: LSETH Pegging Health Check
 
 on:
   schedule:
