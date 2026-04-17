@@ -1,0 +1,29 @@
+name: LSETH Hourly Monitor
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # every hour on the hour
+  workflow_dispatch:       # allow manual trigger
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run monitor script
+        env:
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          GSHEET_CREDENTIALS: ${{ secrets.GSHEET_CREDENTIALS }}
+          GSHEET_ID: ${{ secrets.GSHEET_ID }}
+        run: python lseth_pegging_health_check.py
